@@ -1,0 +1,12 @@
+.form-check-input:hover {
+  color: white;
+  background-color: #DEB0DF;
+  border-color: #DEB0DF;
+}
+
+.form-check-input:checked {
+  background-color: #A168FE;
+  border-color: #A168FE;
+}
+
+

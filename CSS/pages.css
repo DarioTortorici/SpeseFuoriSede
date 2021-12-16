@@ -1,0 +1,89 @@
+* {
+    box-sizing: border-box
+  }
+  
+  #page-top {
+    background-image: linear-gradient(to bottom right, #DEB0DF, #A168FE);
+  }
+  
+  a {
+    color: #ffffff;
+    text-decoration: none;
+    }
+  
+  a:hover {
+    color: #2C1C41;
+  }
+
+  #balance-info {
+    color: white;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Dosis', sans-serif;
+    line-height: 1.6;
+  }
+
+  
+  #root {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    text-align: left;
+    padding: 1.5rem 2.5rem;
+    margin: 0 0 2rem 0;
+    font-size: 2rem;
+    color: rgb(64, 144, 235);
+  }
+
+  p {
+    padding: 0 2.5rem 2.5rem;
+    margin: 0;
+  }
+
+  .btn-primary {
+    color: #fff;
+    background-color: #EB9AB4;
+    border-color: #EB9AB4;
+  }
+
+  .btn-primary:hover {
+    color: #fff;
+    background-color: #d38ba2;
+    border-color: #d38ba2;
+}
+
+
+.btn-primary:focus {
+  color: #fff;
+  background-color: #A168FE;
+  border-color: #A168FE;
+  box-shadow:  0 0 0.25rem rgb(186 144 254 / 50%);
+}
+
+
+  #nav-button {
+    color: black;
+    background-color: white;
+    border-color: black;
+  }
+
+  #nav-button.active {
+    color: white;
+    background-color: #A168FE;
+    border-color: #A168FE;
+  }
+
+  #nav-button:hover {
+    color: white;
+    background-color: #DEB0DF;
+    border-color: #DEB0DF;
+  }
+
+  #nav-button:active{
+    box-shadow: 0 0 0 0.25rem #e0a0b470;
+  }
