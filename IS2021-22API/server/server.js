@@ -142,7 +142,7 @@ const swaggerOptions = {
                                         example: 'Spesa alla Coop'
                                     },
                                     "category": {
-                                        $ref: '#/components/schemas/categorie',
+                                        $ref: '#/components/schemas/categoria',
                                         example: "Alimenti"
                                     },
                                     "amount": {
@@ -178,17 +178,7 @@ const swaggerOptions = {
                             }
                         },
                         '400': {
-                            description: 'Get Transazioni non riuscita o errore nella connessione al database',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                    example: {
-                                        message: 'THE TRANSACTIONS API IS NOT WORKING!'
-                                    }
-                                }
-                            }
+                            description: 'Get Transazioni non riuscita o errore nella connessione al database'
                         }
                     }
                 },
@@ -284,7 +274,7 @@ const swaggerOptions = {
                                         example: 'Bucato'
                                     },
                                     "category": {
-                                        $ref: '#/components/schemas/categorie',
+                                        $ref: '#/components/schemas/categoria',
                                         example: "Lavanderia"
                                     },
                                     "amount": {
@@ -415,7 +405,7 @@ const swaggerOptions = {
                                         example: 'Stipendio'
                                     },
                                     "category": {
-                                        $ref: '#/components/schemas/categorie',
+                                        $ref: '#/components/schemas/categoria',
                                         example: "Extra"
                                     },
                                     "amount": {
@@ -477,7 +467,7 @@ const swaggerOptions = {
                                         example: 'Bucato'
                                     },
                                     "category": {
-                                        $ref: '#/components/schemas/categorie',
+                                        $ref: '#/components/schemas/categoria',
                                         example: "Lavanderia"
                                     },
                                     "amount": {
@@ -602,7 +592,7 @@ const swaggerOptions = {
                                         example: 'Bucato'
                                     },
                                     "category": {
-                                        $ref: '#/components/schemas/categorie',
+                                        $ref: '#/components/schemas/categoria',
                                         example: "Lavanderia"
                                     },
                                     "amount": {
@@ -1167,7 +1157,7 @@ app.get('/goals', (request, response) => {
  *                  description: La descrizione della transazione.
  *                  example: Spesa alla coop
  *               category:
- *                  $ref: #/components/schemas/categorie
+ *                  $ref: #/components/schemas/categoria
  *                  example: Alimenti
  *               amount
  *                  type: number
@@ -1243,7 +1233,7 @@ app.get('/transactions', (request, response) => {
  *                  description: La descrizione della transazione.
  *                  example: Bucato
  *              category:
- *                  $ref: #/components/schemas/categorie
+ *                  $ref: #/components/schemas/categoria
  *                  example: Lavanderia
  *              amount:
  *                   type: number
@@ -1379,7 +1369,7 @@ app.get('/goal/:id', (request, response) => {
  *                  description: La descrizione della transazione.
  *                  example: Stipendio
  *              category
- *                  $ref: #/components/schemas/categorie
+ *                  $ref: #/components/schemas/categoria
  *                  example: Extra
  *              amount:
  *                   type: number
@@ -1462,7 +1452,7 @@ app.post('/entrate', (request, response) => {
  *                  description: La descrizione della spesa.
  *                  example: Bucato
  *              category
- *                  $ref: #/components/schemas/categorie
+ *                  $ref: #/components/schemas/categoria
  *                  example: Lavanderia
  *              amount:
  *                   type: number
