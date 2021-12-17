@@ -18,7 +18,7 @@ Per usufruire lato client dell'app basta semplicemente aprire la pagina **index.
 L'applicativo permette di tenere traccia delle proprie transazioni (entrate e spese) e quindi del proprio bilancio finanziario. Inoltre permette la creazione di obiettivi e come una qualsiasi transazione la possibilità di modificarlo o eliminarlo.
 
 ## API's
-Ogni tipo di API è stata sviluppata per più scopi, ma per questioni di ripetitività verrà solo mostrato l'esempio delle transazioni, poiché il più completo e corposo.
+Ogni tipo di API è stata sviluppata per più scopi, ma per questioni di ripetitività verrà solo mostrato il codice dell'esempio delle transazioni, poiché il più completo e corposo.
 
 ### GET
 Fa richiesta al database di tutte le transazioni (entrate e spese), li ordina in ordine di data e crea dinamicamente una lista in HTML.
@@ -375,6 +375,144 @@ app.delete('/delete/:id', (request, response) => {
 })
 ```
 
+
+### Tabella API Reference
+
+#### Get Bilancio
+
+```http
+  GET /bilancio
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `null` | `float` | Restituisce il bilancio|
+
+#### Get Categoria
+
+```http
+  GET /categoria
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `null` | `json` |   Restituisce le categorie di sistema|
+
+
+#### Get Transazioni
+
+```http
+  GET /transactions
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `null` | `json` |  Restituisce le transazioni|
+
+#### Get Transazione da id
+
+```http
+  GET /transactions/${id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Richiesto**. Id della transazione |
+
+#### Post entrata
+
+```http
+  POST /entrate
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `null` | `json` | Registra un'entrata|
+
+#### Post spesa
+
+```http
+  POST /spese
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `null` | `json` | Registra una spesa | 
+
+#### Modicia Transazione da id
+
+```http
+  PUT /modify/transactions/${id}/${newAmount}/${newDescription}/${newDate}/${newCategory}/${newRecurrency}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Richiesto**. Id della transazione |
+| `newAmount`      | `float` | **Richiesto**. _Facoltativo il cambio del campo precompilato_ |
+| `newDescription`      | `string` | **Richiesto**. _Facoltativo il cambio del campo precompilato_ |
+| `newDate`      | `date` | **Richiesto**. _Facoltativo il cambio del campo precompilato_ |
+| `newCategory`      | `string` | **Richiesto**. _Facoltativo il cambio del campo precompilato_ |
+| `newRecurrency`      | `integer` | **Richiesto**. _Facoltativo il cambio del campo precompilato_ |
+
+#### Delete Transazione/Obiettivo da id
+
+```http
+  DELETE /delete/${id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Richiesto**. Id della transazione/obiettivo
+
+#### Get Obiettivi
+
+```http
+  GET /goals
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `null` | `json` |  Restituisce gli obiettivi|
+
+#### Get Obiettivo da id
+```http
+  GET /goal/${id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Richiesto**. Id dell'obiettivo |
+
+
+#### Post obiettivo
+
+```http
+  POST /goal
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `null` | `json` | Registra un obiettivo | 
+
+#### Modicia Transazione da id
+
+```http
+  PUT /modify/goal/${id}/${newAmount}/${newDescription}/${newDate}/
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Richiesto**. Id della transazione |
+| `newAmount`      | `float` | **Richiesto**. _Facoltativo il cambio del campo precompilato_ |
+| `newDescription`      | `string` | **Richiesto**. _Facoltativo il cambio del campo precompilato_ |
+| `newDate`      | `date` | **Richiesto**. _Facoltativo il cambio del campo precompilato_ |
+
+## Screenshots App
+
+![Homepage](https://imgur.com/a/SpXGL0E)
+![Obiettivi](https://imgur.com/a/WRTfeCA)
+![Modifica Transazione](https://imgur.com/a/tiUnm2y)
+
 ## Linguaggi e Tools usati per lo sviluppo
 ### Front-End
 * HTML5 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/>
@@ -394,6 +532,6 @@ app.delete('/delete/:id', (request, response) => {
 * Postman <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="postman" width="40" height="40"/>
 
 ## Autori
-* Riccardo Deppi
-* Nicola Radaelli
-* Dario Tortorici
+- [Riccardo Deppi] (https://github.com/RiccardoDeppi/)
+- [Nicola Radaelli] (https://github.com/NickRada/)
+- [Dario Tortorici] (https://github.com/DarioTortorici/)
