@@ -32,9 +32,27 @@ const swaggerOptions = {
             '/categoria': {
                 get: {
                     tags: ['Categorie'],
-                    summary: "Ottine categorie",
-                    description: 'Ottiene dal server la lista delle categorie',
-                    operationId: 'getCategory',
+                    summary: "Ottiene categorie",
+                    description: 'Ottiene dal server la lista delle categorie predefinite',
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "_id": {
+                                        type: "ObjectId",
+                                        description: "Identificativo univoco",
+                                        example: 'ObjectId("61a8ac85b7eebf0587e16165")'
+                                    },
+                                    "name": {
+                                        type: "string",
+                                        description: "Il nome della categoria",
+                                        example: 'Alimenti'
+                                    }
+                                }
+                            }
+                        }
+                    },
                     responses: {
                         '200': {
                             description: 'Categorie ottenute con successo',
@@ -50,9 +68,6 @@ const swaggerOptions = {
                             description: 'Categorie non trovate o errore nella connessione al database',
                             content: {
                                 'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
                                     example: {
                                         message: 'THE CATEGORY API IS NOT WORKING!'
                                     }
@@ -65,17 +80,30 @@ const swaggerOptions = {
             '/balance': {
                 get: {
                     tags: ['Bilancio'],
-                    description: "Ottiene dal server il bilancio dell'utente",
-                    operationId: 'getBalance',
-                    parameters: [
-                    ],
+                    summary: "Ottiene bilancio",
+                    description: "Ottiene dal server il bilancio delle transazioni dell'utente",
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "amount": {
+                                        type: "number",
+                                        format: "float",
+                                        description: "Cifra del bilancio",
+                                        example: '1036.74'
+                                    }
+                                }
+                            }
+                        }
+                    },
                     responses: {
                         '200': {
                             description: 'Bilancio ottenuto con successo',
                             content: {
                                 'application/json': {
                                     schema: {
-                                        
+                                        $ref: '#/components/schemas/bilancio'
                                     }
                                 }
                             }
@@ -84,9 +112,6 @@ const swaggerOptions = {
                             description: 'Bilancio non esistente o errore nella connessione al database',
                             content: {
                                 'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
                                     example: {
                                         message: 'THE BALANCE API IS NOT WORKING!'
                                     }
@@ -99,17 +124,55 @@ const swaggerOptions = {
             '/transactions': {
                 get: {
                     tags: ['Transazioni'],
-                    description: "Ottiene dal server la lista di tutte le entrate e le spese",
-                    operationId: 'getTransactions',
-                    parameters: [
-                    ],
+                    summary: "Ottiene transazioni",
+                    description: "Ottiene dal server la lista di tutte le transazioni, ossia entrate e spese",
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "_id": {
+                                        type: "ObjectId",
+                                        description: "Identificativo univoco",
+                                        example: 'ObjectId("61a8ac85b7eebf0587e16165")'
+                                    },
+                                    "description": {
+                                        type: "string",
+                                        description: "La descrizione della transazione",
+                                        example: 'Spesa alla Coop'
+                                    },
+                                    "category": {
+                                        $ref: '#/components/schemas/categorie',
+                                        example: "Alimenti"
+                                    },
+                                    "amount": {
+                                        type: "number",
+                                        format: "float",
+                                        description: "Cifra del bilancio",
+                                        example: '54.32'
+                                    },
+                                    "date": {
+                                        type: "string",
+                                        format: "date",
+                                        description: "La data della transazione",
+                                        example: '2021-8-22'
+                                    },
+                                    "recurrency": {
+                                        type: "integer",
+                                        description: "Giorni dalla ricorrenza",
+                                        example: '0'
+                                    }
+                                }
+                            }
+                        }
+                    },
                     responses: {
                         '200': {
                             description: 'Transazioni ottenute con successo',
                             content: {
                                 'application/json': {
                                     schema: {
-                                        $ref: '#/components/schemas/entrate'
+                                        $ref: '#/components/schemas/transazioni'
                                     }
                                 }
                             }
@@ -130,44 +193,43 @@ const swaggerOptions = {
                     }
                 },
             },
-            '/entrate': {
-                post: {
-                    tags: ['Transazioni'],
-                    description: "Manda al server una entrata",
-                    parameters: {
-                        "- in": "descrizione"
-                    },
-                    responses: {
-                        '200': {
-                            description: 'Entrata registrata con successo',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/entrate'
-                                    }
-                                }
-                            }
-                        },
-                        '400': {
-                            description: 'Post entrata non riuscita o errore nella connessione al database',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
-                        }
-                    }
-                },
-            },
             '/goals': {
                 get: {
                     tags: ['Obiettivi'],
+                    summary: "Ottiene obiettivi",
                     description: "Ottiene dal server la lista di tutti gli obiettivi",
-                    operationId: 'getGoals',
-                    parameters: [
-                    ],
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "_id": {
+                                        type: "ObjectId",
+                                        description: "Identificativo univoco",
+                                        example: 'ObjectId("61a8ac85b7eebf0587e16165")'
+                                    },
+                                    "amount": {
+                                        type: "number",
+                                        format: "float",
+                                        description: "Cifra dell'obiettivo",
+                                        example: '197500'
+                                    },
+                                    "description": {
+                                        type: "string",
+                                        description: "La descrizione dell'obiettivo",
+                                        example: 'Spesa alla Coop'
+                                    },
+                                    "date": {
+                                        type: "string",
+                                        format: "date",
+                                        description: "La data di scadenza dell'obiettivo",
+                                        example: '2021-03-21'
+                                    },
+
+                                }
+                            }
+                        }
+                    },
                     responses: {
                         '200': {
                             description: 'Obiettivi ottenuti con successo',
@@ -183,9 +245,6 @@ const swaggerOptions = {
                             description: 'Get Obiettivi non riuscita o errore nella connessione al database',
                             content: {
                                 'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
                                     example: {
                                         message: 'THE GOALS API IS NOT WORKING!'
                                     }
@@ -195,30 +254,266 @@ const swaggerOptions = {
                     }
                 },
             },
+            '/transaction/{transactionId}': {
+                get: {
+                    tags: ['Transazioni'],
+                    summary: "Ritorna transazione",
+                    description: "Manda al server una richiesta di get della transazione con quel identificativo",
+                    parameters: [
+                        {
+                            "name": "transactionId",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string" },
+                            "example": "61b79bfff0d6c37a84892105"
+                        }
+                    ],
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "_id": {
+                                        type: "ObjectId",
+                                        description: "Identificativo univoco",
+                                        example: 'ObjectId("61b79bfff0d6c37a84892105")'
+                                    },
+                                    "description": {
+                                        type: "string",
+                                        description: "La descrizione della transazione",
+                                        example: 'Bucato'
+                                    },
+                                    "category": {
+                                        $ref: '#/components/schemas/categorie',
+                                        example: "Lavanderia"
+                                    },
+                                    "amount": {
+                                        type: "number",
+                                        format: "float",
+                                        description: "L'ammontare della transazione",
+                                        example: '4.45'
+                                    },
+                                    "date": {
+                                        type: "string",
+                                        format: "date",
+                                        description: "La data della transazione",
+                                        example: '2021-08-22'
+                                    },
+                                    "recurrency": {
+                                        type: "integer",
+                                        description: "Giorni dalla ricorrenza",
+                                        example: '0'
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responses: {
+                        '200': {
+                            description: 'Transazione ritornata con successo',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        $ref: '#/components/schemas/transazioni'
+                                    }
+                                }
+                            }
+                        },
+                        '400': {
+                            description: 'Get Transazione non riuscita o errore nella connessione al database',
+                        },
+                        '404': {
+                            description: 'Transazione con questo ID non trovata',
+                        }
+                    }
+                },
+            },
+            '/goal/{goalId}': {
+                get: {
+                    tags: ['Obiettivi'],
+                    summary: "Ritorna un obiettivo",
+                    description: "Manda al server una richiesta di get dell'obiettivo con quel identificativo ",
+                    parameters: [
+                        {
+                            "name": "goalId",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string" },
+                            "example": "61b660933b7ecc2de476ab2e"
+                        }
+                    ],
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "_id": {
+                                        type: "ObjectId",
+                                        description: "Identificativo univoco",
+                                        example: 'ObjectId("61b660933b7ecc2de476ab2e")'
+                                    },
+                                    "description": {
+                                        type: "string",
+                                        description: "La descrizione dell'obiettivo",
+                                        example: 'Lamborghini Huracan'
+                                    },
+                                    "amount": {
+                                        type: "number",
+                                        format: "float",
+                                        description: "L'ammontare della somma per il raggiungimento dell'obiettivo.",
+                                        example: '235235.45'
+                                    },
+                                    "date": {
+                                        type: "string",
+                                        format: "date",
+                                        description: "La data di scadenza dell'obiettivo",
+                                        example: '2021-8-22'
+                                    },
+
+                                }
+                            }
+                        }
+                    },
+                    responses: {
+                        '200': {
+                            description: 'Obiettivo ritornato con successo',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        $ref: '#/components/schemas/goal'
+                                    }
+                                }
+                            }
+                        },
+                        '400': {
+                            description: 'Get Obiettivo non riuscita o errore nella connessione al database',
+                        },
+                        '404': {
+                            description: 'Obiettivo con questo ID non trovato'
+                        }
+                    }
+                },
+            },
+            '/entrate': {
+                post: {
+                    tags: ['Transazioni'],
+                    summary: "Registra un'entrata",
+                    description: "Manda al server una entrata",
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "_id": {
+                                        type: "ObjectId",
+                                        description: "Identificativo univoco",
+                                        example: 'ObjectId("61a8ac85b7eebf0587e16165")'
+                                    },
+                                    "description": {
+                                        type: "string",
+                                        description: "La descrizione dell'entrata",
+                                        example: 'Stipendio'
+                                    },
+                                    "category": {
+                                        $ref: '#/components/schemas/categorie',
+                                        example: "Extra"
+                                    },
+                                    "amount": {
+                                        type: "number",
+                                        format: "float",
+                                        description: "L'ammontare della transazione",
+                                        example: '1235.45'
+                                    },
+                                    "date": {
+                                        type: "string",
+                                        format: "date",
+                                        description: "La data della transazione",
+                                        example: '2021-08-22'
+                                    },
+                                    "recurrency": {
+                                        type: "integer",
+                                        description: "Giorni dalla ricorrenza",
+                                        example: '0'
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responses: {
+                        '200': {
+                            description: 'Entrata registrata con successo',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        $ref: '#/components/schemas/transazioni'
+                                    }
+                                }
+                            }
+                        },
+                        '400': {
+                            description: 'Post entrata non riuscita o errore nella connessione al database',
+                        }
+                    }
+                },
+            },
             '/spese': {
                 post: {
                     tags: ['Transazioni'],
+                    summary: "Registra una spesa",
                     description: "Manda al server una spesa",
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "_id": {
+                                        type: "ObjectId",
+                                        description: "Identificativo univoco",
+                                        example: 'ObjectId("61a8ac85b7eebf0587e16165")'
+                                    },
+                                    "description": {
+                                        type: "string",
+                                        description: "La descrizione della spesa",
+                                        example: 'Bucato'
+                                    },
+                                    "category": {
+                                        $ref: '#/components/schemas/categorie',
+                                        example: "Lavanderia"
+                                    },
+                                    "amount": {
+                                        type: "number",
+                                        format: "float",
+                                        description: "L'ammontare della transazione",
+                                        example: '4.45'
+                                    },
+                                    "date": {
+                                        type: "string",
+                                        format: "date",
+                                        description: "La data della transazione",
+                                        example: '2021-08-22'
+                                    },
+                                    "recurrency": {
+                                        type: "integer",
+                                        description: "Giorni dalla ricorrenza",
+                                        example: '0'
+                                    }
+                                }
+                            }
+                        }
+                    },
                     responses: {
                         '200': {
                             description: 'Spesa registrata con successo',
                             content: {
                                 'application/json': {
                                     schema: {
-                                        $ref: '#/components/schemas/spese'
+                                        $ref: '#/components/schemas/transazioni'
                                     }
                                 }
                             }
                         },
                         '400': {
                             description: 'Post spesa non riuscita o errore nella connessione al database',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
                         }
                     }
                 },
@@ -226,7 +521,40 @@ const swaggerOptions = {
             '/goal': {
                 post: {
                     tags: ['Obiettivi'],
+                    summary: "Registra un obiettivo.",
                     description: "Manda al server un obiettivo",
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "_id": {
+                                        type: "ObjectId",
+                                        description: "Identificativo univoco",
+                                        example: 'ObjectId("61a8ac85b7eebf0587e16165")'
+                                    },
+                                    "description": {
+                                        type: "string",
+                                        description: "La descrizione dell'obiettivo",
+                                        example: 'Lamborghini'
+                                    },
+                                    "amount": {
+                                        type: "number",
+                                        format: "float",
+                                        description: "L'ammontare della somma per il raggiungimento dell'obiettivo.",
+                                        example: '235235.45'
+                                    },
+                                    "date": {
+                                        type: "string",
+                                        format: "date",
+                                        description: "La data di scadenza dell'obiettivo",
+                                        example: '2021-08-22'
+                                    },
+
+                                }
+                            }
+                        }
+                    },
                     responses: {
                         '200': {
                             description: 'Obiettivo registrato con successo',
@@ -240,13 +568,6 @@ const swaggerOptions = {
                         },
                         '400': {
                             description: 'Post obiettivo non riuscita o errore nella connessione al database',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
                         }
                     }
                 },
@@ -254,41 +575,73 @@ const swaggerOptions = {
             '/delete/{transactionId}': {
                 delete: {
                     tags: ['Transazioni'],
-                    description: "Elimina dal server una transazione",
-                    operationId: 'deleteDoc',
+                    summary: "Elimina una spesa",
+                    description: "Manda al server una richiesta di eliminazione della transazione con quel identificativo",
                     parameters: [
-                        "transactionId"
+                        {
+                            "name": "transactionId",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string" },
+                            "example": "61b79bfff0d6c37a84892105"
+                        }
                     ],
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "_id": {
+                                        type: "ObjectId",
+                                        description: "Identificativo univoco",
+                                        example: 'ObjectId("61a8ac85b7eebf0587e16165")'
+                                    },
+                                    "description": {
+                                        type: "string",
+                                        description: "La descrizione della transazione",
+                                        example: 'Bucato'
+                                    },
+                                    "category": {
+                                        $ref: '#/components/schemas/categorie',
+                                        example: "Lavanderia"
+                                    },
+                                    "amount": {
+                                        type: "number",
+                                        format: "float",
+                                        description: "L'ammontare della transazione",
+                                        example: '4.45'
+                                    },
+                                    "date": {
+                                        type: "string",
+                                        format: "date",
+                                        description: "La data della transazione",
+                                        example: '2021-8-22'
+                                    },
+                                    "recurrency": {
+                                        type: "integer",
+                                        description: "Giorni dalla ricorrenza",
+                                        example: '0'
+                                    }
+                                }
+                            }
+                        }
+                    },
                     responses: {
                         '200': {
                             description: 'Transazione eliminata con successo',
                             content: {
                                 'application/json': {
                                     schema: {
-                                        $ref: '#/components/schemas/Posts'
+                                        $ref: '#/components/schemas/transazioni'
                                     }
                                 }
                             }
                         },
                         '400': {
                             description: 'Delete Transazione non riuscita o errore nella connessione al database',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
                         },
                         '404': {
                             description: 'Transazione con questo ID non trovata',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
                         }
                     }
                 },
@@ -296,41 +649,65 @@ const swaggerOptions = {
             '/delete/{goalId}': {
                 delete: {
                     tags: ['Obiettivi'],
-                    description: "Elimina dal server un obiettivo",
-                    operationId: 'deleteDoc',
+                    summary: "Elimina un obiettivo",
+                    description: "Manda al server una richiesta di eliminazione dell'obiettivo con quel identificativo ",
                     parameters: [
-                        "goalId"
+                        {
+                            "name": "goalId",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string" },
+                            "example": "61b660933b7ecc2de476ab2e"
+                        }
                     ],
+                    content: {
+                        'applications/json': {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    "_id": {
+                                        type: "ObjectId",
+                                        description: "Identificativo univoco",
+                                        example: 'ObjectId("61a8ac85b7eebf0587e16165")'
+                                    },
+                                    "description": {
+                                        type: "string",
+                                        description: "La descrizione dell'obiettivo",
+                                        example: 'Lamborghini'
+                                    },
+                                    "amount": {
+                                        type: "number",
+                                        format: "float",
+                                        description: "L'ammontare della somma per il raggiungimento dell'obiettivo.",
+                                        example: '235235.45'
+                                    },
+                                    "date": {
+                                        type: "string",
+                                        format: "date",
+                                        description: "La data di scadenza dell'obiettivo",
+                                        example: '2021-8-22'
+                                    },
+
+                                }
+                            }
+                        }
+                    },
                     responses: {
                         '200': {
                             description: 'Obiettivo eliminato con successo',
                             content: {
                                 'application/json': {
                                     schema: {
-                                        $ref: '#/components/schemas/Posts'
+                                        $ref: '#/components/schemas/goal'
                                     }
                                 }
                             }
                         },
                         '400': {
                             description: 'Delete Obiettivo non riuscita o errore nella connessione al database',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
                         },
                         '404': {
-                            description: 'Obiettivo con questo ID non trovato',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
+                            description: 'Obiettivo con questo ID non trovato'
                         }
                     }
                 },
@@ -338,10 +715,51 @@ const swaggerOptions = {
             '/modify/transaction/{transactionId}/{newAmount}/{newDescription}/{newDate}/{newCategory}/{newRecurrency}': {
                 put: {
                     tags: ['Transazioni'],
-                    description: "Modifica dal server una transazione",
-                    operationId: 'modifyTransactionDoc',
+                    summary: "Modifica una transazione",
+                    description: "Modifica dal server una transazione con quell'identificativo con i valori passati",
                     parameters: [
-                        "transactionId"
+                        {
+                            "name": "transactionId",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string" },
+                            "example": "61b79bfff0d6c37a84892105"
+                        },
+                        {
+                            "name": "newAmount",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "number", "format": "float" },
+                            "example": "-35.00"
+                        },
+                        {
+                            "name": "newDescription",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string" },
+                            "example": "Spesa alla Lidl"
+                        },
+                        {
+                            "name": "newDate",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string", "format": "date" },
+                            "example": "2021-12-13"
+                        },
+                        {
+                            "name": "newCategory",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string" },
+                            "example": "Alimenti"
+                        },
+                        {
+                            "name": "newRecurrency",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "integer" },
+                            "example": "0"
+                        }
                     ],
                     responses: {
                         '200': {
@@ -349,72 +767,71 @@ const swaggerOptions = {
                             content: {
                                 'application/json': {
                                     schema: {
-                                        $ref: '#/components/schemas/Posts'
+                                        $ref: '#/components/schemas/transazioni'
                                     }
                                 }
                             }
                         },
                         '400': {
-                            description: 'Put Transazione non riuscita o errore nella connessione al database',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
+                            description: 'Put Transazione non riuscita o errore nella connessione al database'
                         },
                         '404': {
-                            description: 'Transazione con questo ID non trovata',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
+                            description: 'Transazione con questo ID non trovata'
                         }
                     }
                 },
             },
-            '/modify/transaction/{goalId}/{newAmount}/{newDescription}/{newDate}': {
+            '/modify/goal/{goalId}/{newAmount}/{newDescription}/{newDate}': {
                 put: {
                     tags: ['Obiettivi'],
-                    description: "Modifica dal server un obiettivo",
-                    operationId: 'modifyGoalDoc',
+                    summary: "Modifica un obiettivo",
                     parameters: [
-                        "goalId"
+                        {
+                            "name": "goalId",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string" },
+                            "example": "61b660933b7ecc2de476ab2e"
+                        },
+                        {
+                            "name": "newAmount",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "number", "format": "float" },
+                            "example": "264800"
+                        },
+                        {
+                            "name": "newDescription",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string" },
+                            "example": "Lamborghini Aventador"
+                        },
+                        {
+                            "name": "newDate",
+                            "in": "path",
+                            "required": true,
+                            "schema": { "type": "string", "format": "date" },
+                            "example": "2021-12-13"
+                        }
                     ],
+                    description: "Modifica dal server un obiettivo con quell'identificativo con i nuovi valori",
                     responses: {
                         '200': {
                             description: 'Obiettivo modificato con successo',
                             content: {
                                 'application/json': {
                                     schema: {
-                                        $ref: '#/components/schemas/Posts'
+                                        $ref: '#/components/schemas/goal'
                                     }
                                 }
                             }
                         },
                         '400': {
                             description: 'Put obiettivi non riuscita o errore nella connessione al database',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
                         },
                         '404': {
-                            description: 'Obiettivo con questo ID non trovato',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/Error'
-                                    },
-                                }
-                            }
+                            description: 'Obiettivo con questo ID non trovato'
                         }
                     }
                 },
@@ -422,6 +839,17 @@ const swaggerOptions = {
         },
         components: {
             schemas: {
+                bilancio: {
+                    type: "object",
+                    properties: {
+                        "amount": {
+                            type: "number",
+                            format: "float",
+                            description: "Cifra del bilancio",
+                            example: '1036.74'
+                        }
+                    }
+                },
                 categoria: {
                     type: 'object',
                     properties: {
@@ -431,6 +859,32 @@ const swaggerOptions = {
                         name: {
                             type: "string"
                         },
+                    }
+                },
+                transazioni: {
+                    type: 'object',
+                    properties: {
+                        _id: {
+                            type: "ObjectId",
+                        },
+                        description: {
+                            type: "string"
+                        },
+                        category: {
+                            $ref: '#/components/schemas/categoria',
+                        },
+                        amount: {
+                            type: 'number',
+                            format: "float",
+
+                        },
+                        date: {
+                            type: "string",
+                            format: "date"
+                        },
+                        recurrency: {
+                            type: 'integer',
+                        }
                     }
                 },
                 entrate: {
@@ -448,14 +902,14 @@ const swaggerOptions = {
                         amount: {
                             type: 'number',
                             format: "float",
-                            
+
                         },
                         date: {
                             type: "string",
                             format: "date"
                         },
                         recurrency: {
-                            type: 'Integer',
+                            type: 'integer',
                         }
                     }
                 },
@@ -480,7 +934,7 @@ const swaggerOptions = {
                             format: "date"
                         },
                         recurrency: {
-                            type: 'Integer',
+                            type: 'integer',
                         }
                     }
                 },
@@ -494,7 +948,7 @@ const swaggerOptions = {
                             type: "string"
                         },
                         amount: {
-                           type: 'number',
+                            type: 'number',
                             format: "float",
                         },
                         date: {
@@ -523,10 +977,15 @@ const { ObjectId, BSONType } = require("mongodb");
 const { ObjectID, default: BSON } = require("bson");
 const res = require("express/lib/response");
 const req = require("express/lib/request");
+const { serve } = require("swagger-ui-express");
 app.use(cors());
 app.use(Express.urlencoded());
 app.use(Express.json());
 
+MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, (error, client) => {
+    database = client.db(DATABASE);
+    console.log("Mongo DB Connection Successfull");
+});
 
 var DATABASE = "IS_G08";
 var database;
@@ -534,12 +993,39 @@ app.listen(49146, function () {
 
 });
 
-MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true }, (error, client) => {
-    database = client.db(DATABASE);
-    console.log("Mongo DB Connection Successfull");
-});
 
-//API per ottenere il bilancio
+/** 
+* @swagger
+* /balance:
+*   get:
++     tags:
+*      - Bilancio
+*     summary: Ottiene bilancio.
+*     description: Ottiene dal server il bilancio delle transazioni dell'utente
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             properties:
+*               amount:
+*                  type: number
+*                  format: float
+*                  description: Cifra del bilancio
+*                  example: 1036.74            
+*     responses:
+*       200:
+*         description: bilancio ottenuto con successo
+*         content:
+*          applications/json:
+*            schema:
+*              $ref: #/components/schemas/bilancio
+*       400:
+*          description: Bilancio non esistente o errore nella connessione al database
+*          content:
+*          applications/json:
+*            example:
+*              message: THE BALANCE API IS NOT WORKING!           
+*/
 app.get('/balance', (request, response) => {
 
     database.collection("Utenti").findOne({ "id": "1" }, function (error, result) {
@@ -551,7 +1037,7 @@ app.get('/balance', (request, response) => {
     })
 })
 
-//API per ottenere le categorie
+
 /**
  * @swagger
  * /categoria:
@@ -560,25 +1046,22 @@ app.get('/balance', (request, response) => {
  *      - Categorie
  *     summary: Ottiene categorie.
  *     description: Ottiene dal server la lista delle categorie predefinite
- *     requestBody:
- *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
  *             properties:
  *               _id:
- *                  type: string
- *                  format: MongoDB Object
+ *                  type: ObjectId
  *                  description: Identificativo univoco
  *                  example: ObjectId("61a8ac85b7eebf0587e16165")
- *               Name:
+ *               name:
  *                  type: string
  *                  description: Il nome della categoria.
  *                  example: Alimenti
  *               
  *     responses:
- *       201:
+ *       200:
  *         description: categorie ottenute con successo
  *         content:
  *          applications/json:
@@ -590,8 +1073,7 @@ app.get('/balance', (request, response) => {
  *          content:
  *          applications/json:
  *            example:
- *              message: THE CATEGORY API IS NOT WORKING!
- *              
+ *              message: THE CATEGORY API IS NOT WORKING!              
 */
 app.get('/categoria', (request, response) => {
     database.collection("Categoria").find({}).toArray((error, result) => {
@@ -606,7 +1088,52 @@ app.get('/categoria', (request, response) => {
 
 
 
-//API per ottenere gli obiettivi
+/**
+ * @swagger
+ * /goal:
+ *   get:
+ *    tags:
+ *      - Obiettivi
+ *     summary: Ottiene obiettivi.
+ *     description: Ottiene dal server la lista di tutti gli obiettivi
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                  type: ObjectId
+ *                  description: Identificativo univoco
+ *                  example: ObjectId("61a8ac85b7eebf0587e16165")
+ *               description:
+ *                  type: string
+ *                  description: La descrizione dell'obiettivo.
+ *                  example: Lamborghini Huracan
+ *               amount
+ *                  type: number
+ *                  format: float
+ *                  description: Cifra dell'obiettivo
+ *                  example: 197500
+ *              date
+ *                  type: string
+ *                  format: date
+ *                  description: La data di scadenza dell'obiettivo
+ *                  example: 2021-03-21
+ *     responses:
+ *       200:
+ *         description: Obiettivi ottenuti con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/goal
+ *       
+ *       400:
+ *          description: Get Obiettivi non riuscita o errore nella connessione al database
+ *          content:
+ *          applications/json:
+ *            example:
+ *              message: THE GOALS API IS NOT WORKING!          
+*/
 app.get('/goals', (request, response) => {
     database.collection("Goal").find({}).toArray((error, result) => {
         if (error) {
@@ -618,7 +1145,60 @@ app.get('/goals', (request, response) => {
 })
 
 
-//API per ottenere la lista contenente tutte le transazioni dal DB (spese ed entrate)
+/**
+ * @swagger
+ * /transactions:
+ *   get:
+ *    tags:
+ *      - Transazioni
+ *     summary: Ottiene transazioni.
+ *     description: Ottiene dal server la lista di tutte le transazioni, ossia entrate e spese
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                  type: ObjectId
+ *                  description: Identificativo univoco
+ *                  example: ObjectId("61a8ac85b7eebf0587e16165")
+ *               description:
+ *                  type: string
+ *                  description: La descrizione della transazione.
+ *                  example: Spesa alla coop
+ *               category:
+ *                  $ref: #/components/schemas/categorie
+ *                  example: Alimenti
+ *               amount
+ *                  type: number
+ *                  format: float
+ *                  description: Cifra del bilancio
+ *                  example: 54.32 
+ *              date
+ *                  type: string
+ *                  format: date
+ *                  description: La data della transazione
+ *                  example: 2021-8-22
+ *              recurrency
+ *                  type: integer
+ *                  description: Giorni dalla ricorrenza
+ *                  example: 0             
+ *     responses:
+ *       200:
+ *         description: Transazioni ottenute con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/transazioni
+ *       
+ *       400:
+ *          description: Transazioni non riuscita o errore nella connessione al database
+ *          content:
+ *          applications/json:
+ *            example:
+ *              message: THE TRANSACTIONS API IS NOT WORKING!
+ *              
+*/
 app.get('/transactions', (request, response) => {
 
     //Prende i dati dal db e li mette in myObj
@@ -634,8 +1214,70 @@ app.get('/transactions', (request, response) => {
     });
 })
 
-//API per ottenere una determinata transazione dal suo ID
+/**
+ * @swagger
+ * /transaction/{transactionId}:
+ *   get:
+ *    tags:
+ *      - Transazioni
+ *     summary: Ritorna transazione
+ *     description: Manda al server una richiesta di get della transazione con quel identificativo
+ *     parameters:
+ *         name: transactionId
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *         example: 61b79bfff0d6c37a84892105
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                  type: ObjectId
+ *                  description: Identificativo univoco
+ *                  example: ObjectId("61b79bfff0d6c37a84892105")
+ *               description:
+ *                  type: string
+ *                  description: La descrizione della transazione.
+ *                  example: Bucato
+ *              category:
+ *                  $ref: #/components/schemas/categorie
+ *                  example: Lavanderia
+ *              amount:
+ *                   type: number
+ *                   format: float
+ *                   description: L'ammontare della transazione.
+ *                   example: 4.45
+ *               date:
+ *                  type: string
+ *                  format: date
+ *                  description: La data della transazione.
+ *                  example: 2021-08-22
+ *               recurrency:
+ *                  type: integer
+ *                  description: Giorni dalla ricorrenza.
+ *                  example: 0
+ *               
+ *     responses:
+ *       200:
+ *         description: Transizione ritornata con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/transazioni
+ *       
+ *       400:
+ *          description: Get transazione non riuscita o errore nella connessione al database
+ *          content:
+ *          applications/json:
+ *            example:
+ *       404:
+ *          description:Transazione con questo ID non trovata              
+*/
 app.get('/transaction/:id', (request, response) => {
+
 
     database.collection("Spese").findOne({ "_id": ObjectId(request.params.id) }, function (error, result) {
         if (result != null) {
@@ -650,7 +1292,58 @@ app.get('/transaction/:id', (request, response) => {
     })
 })
 
-//API per ottenere un determinato obiettivo dal suo ID
+/**
+ * @swagger
+ * /goal/{goalID}:
+ *   get:
+ *    tags:
+ *      - Obiettivi
+ *     summary: Ritorna un obiettivo.
+ *     description: Manda al server una richiesta di get dell'obiettivo con quel identificativo 
+ *       parameters:
+ *         name: goalId
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *         example: 61b660933b7ecc2de476ab2e
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                  type: ObjectId
+ *                  description: Identificativo univoco
+ *                  example: ObjectId("61a8ac85b7eebf0587e16165")
+ *               description:
+ *                  type: string
+ *                  description: La descrizione dell'obiettivo.
+ *                  example: Lamborghini
+ *              amount:
+ *                   type: number
+ *                   format: float
+ *                   description: L'ammontare della somma per il raggiungimento dell'obiettivo.
+ *                   example: 235235.45
+ *               date:
+ *                  type: string
+ *                  format: date
+ *                  description: La data di scadenza dell'obiettivo.
+ *                  example: 2021-8-22
+ *     responses:
+ *       200:
+ *         description: Obiettivo ritornato con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/obiettivi
+ *       
+ *       400:
+ *          description: Get obiettivo non riuscita o errore nella connessione al database
+ *       404: 
+ *          description: Obiettivo con questo ID non trovato
+ *              
+*/
 app.get('/goal/:id', (request, response) => {
 
 
@@ -664,7 +1357,56 @@ app.get('/goal/:id', (request, response) => {
 })
 
 
-//API per inserire l'entrata nel database
+/**
+ * @swagger
+ * /entrate:
+ *   post:
+ *    tags:
+ *      - Transazioni
+ *     summary: Registra un'entrata.
+ *     description: Manda al server una entrata
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                  type: ObjectId
+ *                  description: Identificativo univoco
+ *                  example: ObjectId("61a8ac85b7eebf0587e16165")
+ *               description:
+ *                  type: string
+ *                  description: La descrizione della transazione.
+ *                  example: Stipendio
+ *              category
+ *                  $ref: #/components/schemas/categorie
+ *                  example: Extra
+ *              amount:
+ *                   type: number
+ *                   format: float
+ *                   description: L'ammontare della transazione.
+ *                   example: 1235.45
+ *               date:
+ *                  type: string
+ *                  format: date
+ *                  description: La data della transazione.
+ *                  example: 2021-08-22
+ *               recurrency:
+ *                  type: integer
+ *                  description: Giorni dalla ricorrenza.
+ *                  example: 0
+ *               
+ *     responses:
+ *       200:
+ *         description: Entrata registrata con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/transazioni
+ *       
+ *       400:
+ *          description: Post entrata non riuscita o errore nella connessione al database         
+*/
 app.post('/entrate', (request, response) => {
 
     //Ottiene il bilancio dell'utente e lo aggiorna
@@ -698,7 +1440,57 @@ app.post('/entrate', (request, response) => {
     });
 })
 
-//API per inserire l'entrata nel database
+/**
+ * @swagger
+ * /spese:
+ *   post:
+ *    tags:
+ *      - Transazioni
+ *     summary: Registra una spesa.
+ *     description: Manda al server una spesa
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                  type: ObjectId
+ *                  description: Identificativo univoco
+ *                  example: ObjectId("61a8ac85b7eebf0587e16165")
+ *               description:
+ *                  type: string
+ *                  description: La descrizione della spesa.
+ *                  example: Bucato
+ *              category
+ *                  $ref: #/components/schemas/categorie
+ *                  example: Lavanderia
+ *              amount:
+ *                   type: number
+ *                   format: float
+ *                   description: L'ammontare della transazione.
+ *                   example: 4.45
+ *               date:
+ *                  type: string
+ *                  format: date
+ *                  description: La data della transazione.
+ *                  example: 2021-12-12
+ *               recurrency:
+ *                  type: integer
+ *                  description: Giorni dalla ricorrenza.
+ *                  example: 0
+ *               
+ *     responses:
+ *       200:
+ *         description: Spesa registrata con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/transazioni
+ *       
+ *       400:
+ *          description: Post spesa non riuscita o errore nella connessione al database
+ *              
+*/
 app.post('/spese', (request, response) => {
 
     //Ottiene il bilancio dell'utente e lo aggiorna
@@ -733,7 +1525,48 @@ app.post('/spese', (request, response) => {
     });
 });
 
-
+/**
+ * @swagger
+ * /goal:
+ *   post:
+ *    tags:
+ *      - Obiettivi
+ *     summary: Registra un obiettivo.
+ *     description: Manda al server un obiettivo
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                  type: ObjectId
+ *                  description: Identificativo univoco
+ *                  example: ObjectId("61a8ac85b7eebf0587e16165")
+ *               description:
+ *                  type: string
+ *                  description: La descrizione dell'obiettivo.
+ *                  example: Lamborghini
+ *              amount:
+ *                   type: number
+ *                   format: float
+ *                   description: L'ammontare della somma per il raggiungimento dell'obiettivo.
+ *                   example: 235235.45
+ *               date:
+ *                  type: string
+ *                  format: date
+ *                  description: La data di scadenza dell'obiettivo.
+ *                  example: 2021-08-22               
+ *     responses:
+ *       200:
+ *         description: Obiettivo registrato con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/goal
+ *       
+ *       400:
+ *          description: Post obiettivo non riuscito o errore nella connessione al database             
+*/
 app.post('/goal', (request, response) => {
 
     let newgoal = new Object();
@@ -749,7 +1582,119 @@ app.post('/goal', (request, response) => {
     response.json();
 });
 
-
+/**
+ * @swagger
+ * /delete/{transactionId}:
+ *   delete:
+ *    tags:
+ *      - Transazioni
+ *     summary: Elimina una spesa.
+ *     description: Manda al server una richiesta di eliminazione della transazione con quel identificativo
+ *     parameters:
+ *       name: transactionId
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *         example: 61b79bfff0d6c37a84892105
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                  type: ObjectId
+ *                  description: Identificativo univoco
+ *                  example: ObjectId("61a8ac85b7eebf0587e16165")
+ *               description:
+ *                  type: string
+ *                  description: La descrizione della transazione.
+ *                  example: Spesa alla coop
+ *              amount:
+ *                   type: number
+ *                   format: float
+ *                   description: L'ammontare della transazione.                  
+ *                   example: 235.45
+ *               date:
+ *                  type: string
+ *                  format: date
+ *                  description: La data della transazione.
+ *                  example: 2021-12-12
+ *               recurrency:
+ *                  type: integer
+ *                  description: Giorni dalla ricorrenza.
+ *                  example: 0
+ *               
+ *     responses:
+ *       200:
+ *         description: Transizione eliminata con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/transazioni
+ *       
+ *       400:
+ *          description: Delete transazione non riuscita o errore nella connessione al database
+ *          content:
+ *          applications/json:
+ *            example:
+ *       404:
+ *          description:Transazione con questo ID non trovata
+ *              
+*/
+// OR
+/**
+ * @swagger
+ * /delete/{goalID}:
+ *   delete:
+ *    tags:
+ *      - Obiettivi
+ *     summary: Elimina un obiettivo.
+ *     description: Manda al server una richiesta di eliminazione dell'obiettivo con quel identificativo 
+ *     parameters:
+ *       name: goalId
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *         example: 61b660933b7ecc2de476ab2e
+ *      content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                  type: ObjectId
+ *                  description: Identificativo univoco
+ *                  example: ObjectId("61a8ac85b7eebf0587e16165")
+ *               description:
+ *                  type: string
+ *                  description: La descrizione dell'obiettivo.
+ *                  example: Lamborghini
+ *              amount:
+ *                   type: number
+ *                   format: float
+ *                   description: L'ammontare della somma per il raggiungimento dell'obiettivo.
+ *                   example: 235235.45
+ *               date:
+ *                  type: string
+ *                  format: date
+ *                  description: La data di scadenza dell'obiettivo.
+ *                  example: 2021-8-22
+ *     responses:
+ *       200:
+ *         description: Obiettivo eliminato con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/obiettivi
+ *       
+ *       400:
+ *          description: Delete obiettivo non riuscita o errore nella connessione al database
+ *       404: 
+ *          description: Obiettivo con questo ID non trovato
+ *              
+*/
 app.delete('/delete/:id', (request, response) => {
 
     var transactionAmount = 0;
@@ -808,7 +1753,67 @@ app.delete('/delete/:id', (request, response) => {
 })
 
 
-// Modifica la transizione con quell'identificativo 
+/**
+ * @swagger
+ * /modify/transaction/{transactionId}/{newAmount}/{newDescription}/{newDate}/{newCategory}/{newRecurrency}
+ *  put:
+ *      tags:
+ *          - Transazioni
+ *      summary: Modifica unatransazione
+ *      description: Modifica dal server una transazione con quell'identificativo con i nuovi valori.
+ *      parameters:
+ *       name: transactionId
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *         example: 61b79bfff0d6c37a84892105
+ *       name: newAmount
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : number
+ *              format: float
+ *         example: -35.00
+ *       name: newDescription
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *         example: Spesa alla Lidl
+ *       name: newDate
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *              format: date
+ *         example: 2021-12-13
+ *       name: newCategory
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *         example: Alimenti
+ *       name: newRecurrency
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : integer
+ *         example: 0
+ *      responses:
+ *       200:
+ *         description: Transazione modificata con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/transazione
+ *       400:
+ *          description: Put Transazione non riuscita o errore nella connessione al database
+ *       404:
+ *          description: Transazione con questo ID non trovata
+ *              
+ *          
+ */
 app.put('/modify/transaction/:id/:amount/:desc/:date/:category/:recurrency', (request, response) => {
 
     var amountGap;
@@ -892,8 +1897,54 @@ app.put('/modify/transaction/:id/:amount/:desc/:date/:category/:recurrency', (re
 })
 
 
+/**
+ * @swagger
+ * /modify/goal/{goalId}/{newAmount}/{newDescription}/{newDate}
+ *  put:
+ *      tags:
+ *          - Obiettivi
+ *      description: Modifica dal server un obiettivo con quell'identificativo con i nuovi valori.
+ *      parameters:
+ *       name: goalId
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *         example: 61b79bfff0d6c37a84892105
+ *       name: newAmount
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : number
+ *              format: float
+ *         example: 264800
+ *       name: newDescription
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *         example: Lamborghini Aventador
+ *       name: newDate
+ *       - in: path
+ *         required: true
+ *         schema:
+ *              type : string
+ *              format: date
+ *         example: 2021-12-13
+ *      responses:
+ *       200:
+ *         description: Obiettivo modificato con successo
+ *         content:
+ *          applications/json:
+ *            schema:
+ *              $ref: #/components/schemas/obiettivi
+ *       
+ *       400:
+ *          description: Put obiettivi non riuscita o errore nella connessione al database
+ *       404: 
+ *          description: Obiettivo con questo ID non trovato                
+ */
 app.put('/modify/goal/:id/:amount/:desc/:date', (request, response) => {
-
 
     database.collection("Goal").updateOne({ "_id": ObjectId(request.params.id) },
         //Update
@@ -909,3 +1960,4 @@ app.put('/modify/goal/:id/:amount/:desc/:date', (request, response) => {
 
     response.json("Updated Successfully");
 })
+module.exports = app;
