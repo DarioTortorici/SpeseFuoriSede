@@ -88,7 +88,7 @@ L'applicativo permette di tenere traccia delle proprie transazioni (entrate e sp
 | `Category`      | `string` | **Richiesto**. Categoria spesa |
 | `Recurrency`      | `integer` | **Richiesto**. Giorni di ricorrenza per spesa periodica _Facoltativo il cambio del campo precompilato a 0_ |
 
-### Modicia Transazione da id
+### Modifica Transazione da id
 
 ```https
   PUT /modify/transactions/${id}/${newAmount}/${newDescription}/${newDate}/${newCategory}/${newRecurrency}
@@ -145,7 +145,7 @@ L'applicativo permette di tenere traccia delle proprie transazioni (entrate e sp
 | `Description`      | `string` | **Richiesto**. Descrizione dell'obiettivo |
 | `Date`      | `date` | **Richiesto**. Data di scadenza obiettivo |
 
-### Modicia Transazione da id
+### Modifica Obiettivo da id
 
 ```https
   PUT /modify/goal/${id}/${newAmount}/${newDescription}/${newDate}/
