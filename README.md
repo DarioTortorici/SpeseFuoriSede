@@ -68,7 +68,11 @@ L'applicativo permette di tenere traccia delle proprie transazioni (entrate e sp
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `null` | `json` | Registra un'entrata|
+| `Amount`      | `float` | **Richiesto**. Cifra entrata |
+| `Description`      | `string` | **Richiesto**. Descrizione dell'entrata |
+| `Date`      | `date` | **Richiesto**. Data della transazione |
+| `Category`      | `string` | **Richiesto**. Categoria entrata |
+| `Recurrency`      | `integer` | **Richiesto**. Giorni di ricorrenza per entrata periodica _Facoltativo il cambio del campo precompilato a 0_ |
 
 ### Post spesa
 
@@ -78,7 +82,11 @@ L'applicativo permette di tenere traccia delle proprie transazioni (entrate e sp
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `null` | `json` | Registra una spesa | 
+| `Amount`      | `float` | **Richiesto**. Cifra spesa |
+| `Description`      | `string` | **Richiesto**. Descrizione della spesa |
+| `Date`      | `date` | **Richiesto**. Data della transazione |
+| `Category`      | `string` | **Richiesto**. Categoria spesa |
+| `Recurrency`      | `integer` | **Richiesto**. Giorni di ricorrenza per spesa periodica _Facoltativo il cambio del campo precompilato a 0_ |
 
 ### Modicia Transazione da id
 
@@ -133,7 +141,9 @@ L'applicativo permette di tenere traccia delle proprie transazioni (entrate e sp
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `null` | `json` | Registra un obiettivo | 
+| `Amount`      | `float` | **Richiesto**. Cifra da raggiungere |
+| `Description`      | `string` | **Richiesto**. Descrizione dell'obiettivo |
+| `Date`      | `date` | **Richiesto**. Data di scadenza obiettivo |
 
 ### Modicia Transazione da id
 
