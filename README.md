@@ -40,7 +40,7 @@ L'applicativo permette di tenere traccia delle proprie transazioni (entrate e sp
 ### Get Bilancio
 
 ```https
-  GET /bilancio
+  GET /balance
 ```
 
 | Parameter | Type     | Description                |
@@ -71,7 +71,7 @@ L'applicativo permette di tenere traccia delle proprie transazioni (entrate e sp
 ### Get Transazione da id
 
 ```https
-  GET /transactions/${id}
+  GET /transaction/${id}
 ```
 
 | Parameter | Type     | Description                       |
