@@ -20,13 +20,14 @@ Per avviare la fase di testing basta recarsi nella cartella "IS2021-22API" ed es
 cd \SpeseFuoriSede\IS2021-22API
 npm test
 ```
-**Warning** 
-A causa delle chiamate asincrone a MongoDB il risultato dei test non è consistente perché il database decide arbitrariamente quali eseguire prima. Consigliamo pertanto di testare le API con Swagger con gli appositi tasti _try it out_ . Per raggiungere la pagina di Swagger basta avviare il server e recarsi sulla documentazione swagger
-
+⚠️ **Warning** ⚠️
+A causa delle chiamate asincrone a MongoDB il risultato dei test non è consistente perché il database decide arbitrariamente quali eseguire prima. Consigliamo pertanto di testare le API con Swagger con gli appositi tasti _try it out_ . Per raggiungere la pagina di Swagger basta avviare il server e recarsi sulla documentazione swagger.
+Sul proprio terminale:
 ```
 cd \SpeseFuoriSede\IS2021-22API
 npm start
 ```
+Nel browser:
 ```https
   http://localhost:49146/api-docs/
 ```
