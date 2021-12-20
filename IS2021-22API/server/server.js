@@ -1426,7 +1426,7 @@ app.post('/entrate', (request, response) => {
 
         //Aggiunge l'entrata al database
         database.collection("Entrate").insertOne(temp);
-        response.json();
+        response.json("Entrata inserita");
     });
 })
 
@@ -1497,7 +1497,7 @@ app.post('/spese', (request, response) => {
             }
         });
 
-        //Crea un nuovo oggetto che contiene i dati dell'entrata
+        //Crea un nuovo oggetto che contiene i dati della spesa
         let newExpense = new Object();
         newExpense.amount = "-" + request.body.speseAmount,
             newExpense.category = request.body.transactionCategory,
@@ -1508,7 +1508,7 @@ app.post('/spese', (request, response) => {
         var newData = JSON.stringify(newExpense);
         var temp = JSON.parse(newData);
 
-        //Aggiunge l'entrata al database
+        //Aggiunge la spesa al database
         database.collection("Spese").insertOne(temp);
         response.json();
 
@@ -1567,7 +1567,7 @@ app.post('/goal', (request, response) => {
     var newData = JSON.stringify(newgoal);
     var temp = JSON.parse(newData);
 
-    //Aggiunge l'entrata al database
+    //Aggiunge l'obiettivo al database
     database.collection("Goal").insertOne(temp);
     response.json();
 });

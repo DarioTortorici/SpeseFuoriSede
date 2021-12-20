@@ -14,6 +14,23 @@ npm start
 ### Client
 Per usufruire lato client dell'app basta semplicemente aprire la pagina **index.html** con il proprio browser preferito.
 
+### Test
+Per avviare la fase di testing basta recarsi nella cartella "IS2021-22API" ed eseguire il test con il comando npm test.
+```
+cd \SpeseFuoriSede\IS2021-22API
+npm test
+```
+**Warning** 
+A causa delle chiamate asincrone a MongoDB il risultato dei test non è consistente perché il database decide arbitrariamente quali eseguire prima. Consigliamo pertanto di testare le API con Swagger con gli appositi tasti _try it out_ . Per raggiungere la pagina di Swagger basta avviare il server e recarsi sulla documentazione swagger
+
+```
+cd \SpeseFuoriSede\IS2021-22API
+npm start
+```
+```https
+  http://localhost:49146/api-docs/
+```
+
 ## Funzionalità
 L'applicativo permette di tenere traccia delle proprie transazioni (entrate e spese) e quindi del proprio bilancio finanziario. Inoltre permette la creazione di obiettivi e come una qualsiasi transazione la possibilità di modificarlo o eliminarlo.
 

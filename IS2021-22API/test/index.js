@@ -1,14 +1,15 @@
 var test = require('tape');
+var test2 = require('tape');
+var test3 = require('tape');
 var request = require('supertest');
 var app = require('../server/server');
 
-test('TEST1: Correct employee returned', function (assert) {
+test('TEST1: Correct balance returned', function (assert) {
     request(app)
         .get('/balance')
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-            console.log(res.body.balance);
             var balanceResult = parseInt(res.body.balance);
             var result = false;
             if (!isNaN(balanceResult)) {
@@ -16,42 +17,42 @@ test('TEST1: Correct employee returned', function (assert) {
             }
 
             assert.error(err, 'No error');
-            assert.notEqual(true, result, 'Balance retrieved Correctly');
+            assert.same(true, result, 'Balance retrieved Correctly');
             assert.end();
         });
 });
-/*
-test('TEST2: correct employee added', function (assert) {
+
+
+test2('TEST2: Correct categories returned', function (assert) {
     request(app)
-        .post('/api/employee')
+        .get('/categoria')
+        .expect(200)
+        .end(function (err,res){
+                var errore = false;
+                res.body.forEach(element => {
+                    if(element.name != "Alimenti" && element.name != "Lavanderia" && element.name != "Svago" && element.name != "Salute" && element.name != "Università" && element.name != "Extra"){
+                        errore = true;
+                    }
+                })
+                assert.error(err, 'No error');
+                assert.same(errore, false, 'Category retrieved Correctly');
+                assert.end();
+        });
+        
+});
+
+test3('TEST3: Correct income insert', function (assert) {
+    request(app)
+        .post('/entrate')
+        .expect(200)
         .send({
-            "EmployeeId": "testID", "EmployeeName": "Antonio1 Bucchiarone", "Department": "IT",
-            "DateOfJoining": "12-12-2020",
-            "PhotoFileName": "foto.jpg"
+            "entrateAmount": "100", "transactionCategory": "Alimenti", "entrateDescription": "Spesa settimana",
+            "entrateDate": "12-12-2020",
+            "entrateRecurrencyDays": "0"
         })
-        .end((err, res) => {
-
-            if (err) {
-                reject(new Error('An error occured with the employee Adding API, err: ' + err))
-            }
-
+        .end(function (err,res){
             assert.error(err, 'No error');
-            assert.isEqual("Added Successfully", res.body, "Employee added correctly")
+            assert.same(res.body, "Entrata inserita", 'Income inserted Correctly');
             assert.end();
         });
 });
-
-test('TEST3:  employee deleted', function (assert) {
-    request(app)
-        .del('/api/employee/15')
-        .end((err, res) => {
-
-            if (err) {
-                reject(new Error('An error occured with the employee Adding API, err: ' + err))
-            }
-
-            assert.error(err, 'No error');
-            assert.isEqual("Deleted Successfully", res.body, "Employee deleted correctly")
-            assert.end();
-        });
-});*/
